@@ -4,15 +4,19 @@ mod collatz;
 
 #[actix::main]
 async fn main() {
-    let initial_value = env::args().nth(1).expect("10").parse::<usize>().unwrap();
+    // Initial value for collatz algorithm
+    const DEFAULT_VAL: usize = 10;
+    let val = env::args()
+        .nth(1)
+        .expect(&format!("{DEFAULT_VAL}"))
+        .parse::<usize>()
+        .unwrap();
+
     // start new actor
-    let addr = collatz::CollatzActor {
-        count: initial_value,
-    }
-    .start();
+    let addr = collatz::CollatzActor.start();
 
     // send message and get future for result
-    let res = addr.send(collatz::Ping(10)).await;
+    let res = addr.send(collatz::Run(val)).await;
 
     // handle() returns tokio handle
     println!("RESULTING COUNT: {}", res.unwrap());
