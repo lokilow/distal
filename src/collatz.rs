@@ -35,12 +35,33 @@ impl Handler<Run> for CollatzActor {
 
     fn handle(&mut self, msg: Run, _ctx: &mut Context<Self>) -> Self::Result {
         let val: usize = msg.0;
-        val
 
-        // collatz(val)
+        collatz(val)
     }
 }
 
-// I need to learn rust types real quick
-// fn collatz(val)
-// fn do_collatz(val, iterations)
+fn collatz(val: usize) -> usize {
+    do_collatz(val, 0)
+}
+
+fn do_collatz(val: usize, iterations: usize) -> usize {
+    if val == 1 {
+        iterations
+    } else if val % 2 == 0 {
+        let next_val = val / 2;
+        do_collatz(next_val, iterations + 1)
+    } else {
+        let next_val = 3 * val + 1;
+        do_collatz(next_val, iterations + 1)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_collatz() {
+        assert_eq!(collatz(27), 111);
+    }
+}

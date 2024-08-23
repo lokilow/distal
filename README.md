@@ -10,6 +10,5 @@ Algorithms are pulled from [Distributed Algortihms, An Intuitive Approach](https
 
 ## TODO
 - [x] factor out ping actor into its own module
-- [ ] add `started()` method
-- [ ] add `stop()` method
-- [ ] modify actor to run the collatz conjecture and return the number of steps
+- [x] implement collatz logic
+- [ ] refactor CollatzActor to be able to handle multiple requests at the same time by spining up new actors
