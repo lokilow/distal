@@ -16,7 +16,7 @@ async fn main() {
     let addr = collatz::CollatzActor.start();
 
     // send message and get future for result
-    let res = addr.send(collatz::Run(val)).await;
+    let res = addr.send(collatz::Run { val }).await;
 
     // handle() returns tokio handle
     println!("RESULTING COUNT: {}", res.unwrap());

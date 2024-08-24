@@ -7,7 +7,9 @@ impl Actor for CollatzActor {
 
 #[derive(Message)]
 #[rtype(result = "usize")]
-pub struct Run(pub usize);
+pub struct Run {
+    pub val: usize,
+}
 
 //
 // pub trait Handler<M>
