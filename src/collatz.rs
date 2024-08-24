@@ -9,9 +9,7 @@ impl Actor for CollatzActor {
 
 #[derive(Message, Debug)]
 #[rtype(result = "usize")]
-pub struct Run {
-    pub val: usize,
-}
+pub struct Run(pub usize);
 
 //
 // pub trait Handler<M>
@@ -42,7 +40,7 @@ impl Handler<Run> for CollatzActor {
         dbg!(&msg);
         dbg!(ctx);
 
-        let val: usize = msg.val;
+        let Run(val) = msg;
 
         collatz(val)
     }
