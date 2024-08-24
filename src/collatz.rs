@@ -1,11 +1,13 @@
 use actix::prelude::*;
+
+#[derive(Debug)]
 pub struct CollatzActor;
 
 impl Actor for CollatzActor {
     type Context = Context<Self>;
 }
 
-#[derive(Message)]
+#[derive(Message, Debug)]
 #[rtype(result = "usize")]
 pub struct Run {
     pub val: usize,
@@ -35,8 +37,12 @@ pub struct Run {
 impl Handler<Run> for CollatzActor {
     type Result = usize;
 
-    fn handle(&mut self, msg: Run, _ctx: &mut Context<Self>) -> Self::Result {
-        let val: usize = msg.0;
+    fn handle(&mut self, msg: Run, ctx: &mut Context<Self>) -> Self::Result {
+        dbg!(self);
+        dbg!(&msg);
+        dbg!(ctx);
+
+        let val: usize = msg.val;
 
         collatz(val)
     }
