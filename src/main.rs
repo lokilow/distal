@@ -1,26 +1,26 @@
 use actix::prelude::*;
-use std::env;
+// use std::env;
 mod collatz;
 
-#[actix::main]
-async fn main() {
-    // Initial value for collatz algorithm
-    const DEFAULT_VAL: usize = 10;
-    let val = env::args()
-        .nth(1)
-        .expect(&format!("{DEFAULT_VAL}"))
-        .parse::<usize>()
-        .unwrap();
+// #[actix::main]
+fn main() {
+    let system = System::new();
+    let execution = async {
+        let addr = collatz::CollatzActor.start();
 
-    // start new actor
-    let addr = collatz::CollatzActor.start();
+        let arr: [usize; 100] = (1..=100)
+            .collect::<Vec<_>>()
+            .try_into()
+            .expect("wrong size iterator");
 
-    // send message and get future for result
-    let res = addr.send(collatz::Run(val)).await;
-
-    // handle() returns tokio handle
-    println!("RESULTING COUNT: {}", res.unwrap());
+        let _ = for i in arr {
+            addr.do_send(collatz::Calculate(i))
+        };
+    };
+    Arbiter::current().spawn(execution);
 
     // stop system and exit
-    System::current().stop();
+    // Don't call, I want all the calculations to finish
+    // System::current().stop();
+    let _ = system.run();
 }
